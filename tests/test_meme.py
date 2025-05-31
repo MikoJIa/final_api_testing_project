@@ -15,6 +15,11 @@ def test_authorize_user(authorization, token):
         authorization.check_status_code_is_200()
 
 
+def test_created_meme(create, add_new_meme):
+    create.create_new_meme()
+    create.check_id_meme(create.create_new_meme())
+
+
 def test_get_all_meme(full_get_meme):
     full_get_meme.get_all_meme()
     full_get_meme.check_status_code_is_200()

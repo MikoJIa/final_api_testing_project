@@ -1,7 +1,5 @@
 import pickle
-
 import allure
-
 from endpoints.base_endpoint import BaseEndpoint
 import requests
 

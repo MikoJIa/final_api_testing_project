@@ -1,5 +1,4 @@
 import pickle
-
 import allure
 
 
@@ -17,3 +16,10 @@ class BaseEndpoint:
     @allure.step("Checkin the status of the code")
     def check_status_code_is_200(self):
         assert self.response.status_code == 200
+
+    @allure.step("Checking the found id meme")
+    def check_id_meme(self, id_meme):
+        assert self.id_meme == id_meme
+
+    def check_text_new_meme(self, text):
+        assert self.json_meme['text'] == text

@@ -8,7 +8,4 @@ class GetOneMeme(BaseEndpoint):
     def get_only_one_meme(self, id_meme, path="/"):
         self.response = requests.get(url=f"{self.url}{path}meme{path}{id_meme}", headers=self.headers)
         self.id_meme = self.response.json()['id']
-
-    @allure.step("Checking the found id meme")
-    def check_id_meme(self, id_meme):
-        assert self.id_meme == id_meme
+        self.json_meme = self.response.json()
