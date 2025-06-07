@@ -7,6 +7,7 @@ class BaseEndpoint:
     response = None
     json_meme = None
     id_meme = None
+    new_id = None
     with open('token.pkl', 'rb') as file:
         obj_token = pickle.load(file)
     headers = {
@@ -21,5 +22,17 @@ class BaseEndpoint:
     def check_id_meme(self, id_meme):
         assert self.id_meme == id_meme
 
+    @allure.step("Verifying the correctness of the text of a new meme")
     def check_text_new_meme(self, text):
         assert self.json_meme['text'] == text
+
+    @allure.step("Checking the correct status")
+    def check_status_code_is_valid(self, expected):
+        assert self.response.status_code == expected
+
+    @allure.step("Code status check for failure 400")
+    def check_status_code_is_400(self, expected):
+        assert self.response.status_code == expected
+
+
+

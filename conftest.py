@@ -9,21 +9,28 @@ from endpoints.one_meme import GetOneMeme
 from endpoints.delete import DeleteMeme
 from endpoints.update_meme import UpdateMeme
 from endpoints.create_meme import CreateMeme
-
-
-# url = "http://167.172.172.115:52355/meme"
-
-# headers = {
-#     "Authorization": f"{AuthorizeUser.obj_token}"
-# }
+from endpoints.negative_testing_update import NegativePutTest
+from endpoints.negative_testing_create import NegativeCreateTest
+from endpoints.expected_headers import ExpectedAuthTest
+from endpoints.new_user_authorize import NewUserAuthorization
 
 
 @allure.step("Creating new meme")
 @pytest.fixture()
-def add_new_meme(delete, create):
+def add_new_meme(delete, create, new_auth_user):
     meme = create
     yield meme.create_new_meme().json()["id"]
     delete.deleting_meme(meme.create_new_meme().json()["id"])
+
+
+@pytest.fixture()
+def negative_create_meme():
+    return NegativeCreateTest()
+
+
+@pytest.fixture()
+def auth_headers():
+    return ExpectedAuthTest()
 
 
 @pytest.fixture()
@@ -57,5 +64,15 @@ def updated_meme():
 
 
 @pytest.fixture()
+def negative_test_put():
+    return NegativePutTest()
+
+
+@pytest.fixture()
 def delete():
     return DeleteMeme()
+
+
+@pytest.fixture()
+def new_auth_user():
+    return NewUserAuthorization()

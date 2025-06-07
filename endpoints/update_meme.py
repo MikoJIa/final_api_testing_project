@@ -1,4 +1,5 @@
 import allure
+import pytest
 import requests
 from endpoints.base_endpoint import BaseEndpoint
 
