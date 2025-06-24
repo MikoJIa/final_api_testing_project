@@ -9,23 +9,21 @@ from endpoints.one_meme import GetOneMeme
 from endpoints.delete import DeleteMeme
 from endpoints.update_meme import UpdateMeme
 from endpoints.create_meme import CreateMeme
-from endpoints.negative_testing_update import NegativePutTest
-from endpoints.negative_testing_create import NegativeCreateTest
 from endpoints.expected_headers import ExpectedAuthTest
 from endpoints.new_user_authorize import NewUserAuthorization
+from endpoints.base_endpoint import BaseEndpoint
+from endpoints.negative_created_meme import NegativeCreateMeme
+
+body = BaseEndpoint().body
 
 
 @allure.step("Creating new meme")
 @pytest.fixture()
 def add_new_meme(delete, create, new_auth_user):
     meme = create
-    yield meme.create_new_meme().json()["id"]
-    delete.deleting_meme(meme.create_new_meme().json()["id"])
-
-
-@pytest.fixture()
-def negative_create_meme():
-    return NegativeCreateTest()
+    id_mem = meme.create_new_meme(body).json()["id"]
+    yield id_mem
+    delete.deleting_meme(id_mem)
 
 
 @pytest.fixture()
@@ -59,20 +57,20 @@ def create():
 
 
 @pytest.fixture()
+def negative_create_meme():
+    return NegativeCreateMeme()
+
+
+@pytest.fixture()
 def updated_meme():
     return UpdateMeme()
 
 
-@pytest.fixture()
-def negative_test_put():
-    return NegativePutTest()
-
-
-@pytest.fixture()
+@pytest.fixture(scope='module')
 def delete():
     return DeleteMeme()
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def new_auth_user():
     return NewUserAuthorization()

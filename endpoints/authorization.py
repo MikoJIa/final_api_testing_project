@@ -17,3 +17,6 @@ class AuthorizeUser(BaseEndpoint):
         with open('token.pkl', 'rb') as file:
             obj_token = pickle.load(file)
         return obj_token
+
+    def print_name_user(self):
+        print(self.response.json())

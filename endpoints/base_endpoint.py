@@ -13,6 +13,16 @@ class BaseEndpoint:
     headers = {
              "Authorization": f"{obj_token}"
          }
+    body = {
+        "text": "I love memes",
+        "url": "https://miro.medium.com/v2/resize:fit:1200/1*OkVxoXBTygSKB8K-zbB7uQ.jpeg",
+        "tags": ["face", "smile"],
+        "info": {"colors": ["green", "white"]}
+    }
+    with open('id_meme.txt', 'r') as file:
+        id_mem = int(file.read())
+    with open('id_meme_alex.txt', 'r') as file:
+        id_mem_alex = int(file.read())
 
     @allure.step("Checkin the status of the code")
     def check_status_code_is_200(self):
@@ -20,7 +30,7 @@ class BaseEndpoint:
 
     @allure.step("Checking the found id meme")
     def check_id_meme(self, id_meme):
-        assert self.id_meme == id_meme
+        assert self.response.json()['id'] == id_meme
 
     @allure.step("Verifying the correctness of the text of a new meme")
     def check_text_new_meme(self, text):
