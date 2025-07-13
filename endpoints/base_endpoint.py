@@ -1,10 +1,12 @@
 import pickle
 import allure
+from src.enums.error_enums_global import GlobalErrorMessages
 
 
 class BaseEndpoint:
     url = "http://167.172.172.115:52355"
     response = None
+    response_2 = None
     json_meme = None
     id_meme = None
     new_id = None
@@ -29,8 +31,8 @@ class BaseEndpoint:
         assert self.response.status_code == 200
 
     @allure.step("Checking the found id meme")
-    def check_id_meme(self, id_meme):
-        assert self.response.json()['id'] == id_meme
+    def check_id_meme(self, id_m):
+        assert self.response.json()['id'] == id_m
 
     @allure.step("Verifying the correctness of the text of a new meme")
     def check_text_new_meme(self, text):
@@ -42,7 +44,7 @@ class BaseEndpoint:
 
     @allure.step("Code status check for failure 400")
     def check_status_code_is_400(self, expected):
-        assert self.response.status_code == expected
+        assert self.response.status_code == expected, GlobalErrorMessages.WRONG_STATUS_CODE.value
 
 
 

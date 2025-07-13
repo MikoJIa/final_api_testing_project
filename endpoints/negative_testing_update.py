@@ -12,8 +12,5 @@ class NegativePutTest(BaseEndpoint):
                                      json=parameters_meme,
                                      headers=self.headers)
 
-    def print_response(self):
-        if self.response.status_code == 400:
-            print("400 Bad Request.Invalid parameters!!!")
-        else:
-            print("The request was successful")
+    def check_negative_data_update_meme_expected(self, expected):
+        assert self.response.status_code == expected

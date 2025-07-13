@@ -12,4 +12,5 @@ class NegativeCreateMeme(CreateMeme):
         self.response = requests.post(url=f"{self.url}/meme", json=param_body, headers=self.headers)
         return self.response
 
-
+    def invalid_data_typs(self):
+        assert "Invalid parameters" in self.response.text

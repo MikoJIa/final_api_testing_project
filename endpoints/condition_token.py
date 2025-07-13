@@ -16,6 +16,12 @@ class LiveToken(BaseEndpoint):
         return False
 
     @allure.step("Verifying the validity of the token's lifetime confirmation text")
-    def check_text_token_confirmation(self, name):
-        assert self.response.text == f"Token is alive. Username is {name}"
-        print(name)
+    def check_text_token_confirmation(self, name1, name2):
+        if self.check_live_token(name1):
+            assert self.response.text == f"Token is alive. Username is {name1}"
+            print(name1)
+        elif self.check_live_token(name2):
+            assert self.response.text == f"Token is alive. Username is {name2}"
+            print(name2)
+        else:
+            print("Another account")
