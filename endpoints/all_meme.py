@@ -4,6 +4,7 @@ from endpoints.base_endpoint import BaseEndpoint
 
 
 class GetAllMeme(BaseEndpoint):
+
     @allure.step("Getting all the memes")
     def get_all_meme(self, headers=None):
         headers = headers if headers else self.headers
@@ -24,3 +25,6 @@ class GetAllMeme(BaseEndpoint):
     def error_responses(self):
         assert "401 Unauthorized" in self.response.text
         print("Not authorized")
+
+    def check_status_code_is_401(self, expected):
+        assert self.response.status_code == expected

@@ -1,5 +1,7 @@
 import pickle
 import allure
+
+import conftest
 from src.enums.error_enums_global import GlobalErrorMessages
 
 

@@ -13,12 +13,13 @@ class DeleteMeme(BaseEndpoint):
         self.response = requests.delete(url=f"{self.url}/meme/{id_meme}", headers=self.headers)
         return self.response
 
-
-    @allure.step("Checking if a user can delete someone else's meme")
-    def check_another_user_delete_meme(self, expected_status=403):
-        assert self.response.status_code == expected_status, \
-            f"Expected status {expected_status}, got {self.response.status_code}"
-        print(self.response.text)
+    @allure.step("Check if the meme has really been deleted")
+    def check_deleted_meme(self, id_meme):
+        if self.check_status_code_is_200:
+            get_del_mem = GetOneMeme.get_only_one_meme(id_meme)
+            assert "404 Not found" in get_del_mem.text
+        else:
+            print("The status of the code does not match the expected one.")
 
     @allure.step("Meme removal check")
     def check_deleted_meme(self, id_meme):
