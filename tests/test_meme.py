@@ -23,7 +23,8 @@ USER_AUTH = {
 ANOTHER_USER_AUTH = {
     "name": "Alex"
 }
-id_mem = BaseEndpoint.id_mem
+OBJECT_TOKEN = BaseEndpoint().obj_token
+id_mem = BaseEndpoint().id_mem
 
 
 @allure.feature("Authorize")
@@ -47,7 +48,7 @@ def test_live_token(token):
 @allure.feature("Meme")
 @allure.story("Create meme")
 @pytest.mark.parametrize('valid_data', valid_data_list)
-def test_created_meme(create, valid_data):
+def test_created_meme(create, valid_data, auth_headers):
     create.create_new_meme(body)
     create.check_body_data(valid_data)
     create.check_user_name_meme(USER_AUTH['name'])
@@ -58,7 +59,7 @@ def test_created_meme(create, valid_data):
 @pytest.mark.parametrize('invalid_data', invalid_data_list)
 def test_negative_create_meme(negative_create_meme, invalid_data):
     negative_create_meme.negative_create(invalid_data)
-    negative_create_meme.check_status_code_is_400(400)
+    negative_create_meme.check_status_code_is_400()
     negative_create_meme.invalid_data_typs()
 
 
@@ -78,7 +79,7 @@ def test_get_all_meme(full_get_meme):
     [
         ({"a": "b"}, 401),
         ({"Authorization": "g8JSZHkO0DOUF90"}, 401),
-        ({"outhorization": f'{BaseEndpoint.obj_token}'}, 401)
+        ({"outhorization": f'{OBJECT_TOKEN}'}, 401)
     ])
 def test_get_all_meme_negative(full_get_meme, headers, expected):
     full_get_meme.get_all_meme(headers)
@@ -140,16 +141,16 @@ def test_negative_put_meme(negative_update_meme, negative_data, add_new_meme):
 
 @allure.feature("Meme's")
 @allure.story("Deleted meme's")
-def test_delete_meme(delete, add_new_meme):
+def test_delete_meme(delete, add_new_meme, get_one_meme):
     delete.deleting_meme(add_new_meme)
-    delete.check_deleted_meme(add_new_meme)
+    get_one_meme.get_only_one_meme(add_new_meme)
+    get_one_meme.check_status_code_is_404()
 
 
 @allure.feature("Meme's")
 @allure.story("Deleting a non-existent meme")
-def test_delete_non_existent_meme(delete):
-    delete.checking_non_existent_meme_id()
-    delete.deleted_non_existent_meme()
+def test_delete_non_existent_meme(delete, get_one_meme):
+    delete.deleted_non_existent_meme(get_one_meme.checking_non_existent_meme_id())
 
 
 @allure.feature("Headers")
@@ -157,13 +158,13 @@ def test_delete_non_existent_meme(delete):
 @pytest.mark.parametrize(
     'headers, expected',
     [
-        (BaseEndpoint.headers, 200),
-        ({"Authorization": "g8JSZHkO1DOUF90"}, 401)
+        ({"Authorization": "g8JSZHkO1DOUF90"}, 401),
+        ({"Content-type": "application/json"}, 401)
     ]
 )
 def test_expected_auth_headers(auth_headers, headers, expected):
     auth_headers.to_apply_endpoint(headers)
-    auth_headers.check_status_code_is_valid(expected)
+    auth_headers.check_status_code_is_401(expected)
     auth_headers.output_result()
 
 

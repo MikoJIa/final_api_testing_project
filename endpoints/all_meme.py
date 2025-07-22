@@ -25,6 +25,3 @@ class GetAllMeme(BaseEndpoint):
     def error_responses(self):
         assert "401 Unauthorized" in self.response.text
         print("Not authorized")
-
-    def check_status_code_is_401(self, expected):
-        assert self.response.status_code == expected
