@@ -8,10 +8,13 @@ from endpoints.base_endpoint import BaseEndpoint
 class AuthorizeUser(BaseEndpoint):
 
     @allure.step("Getting token for authorization")
-    def authorize_user(self, body):
+    def authorize_user(self, body, save_token=True):
         self.response = requests.post(url=f"{self.url}/authorize", json=body)
-        with open('token.pkl', 'wb') as file:
-            pickle.dump(self.response.json()['token'], file)
+        if save_token:
+            with open('token.pkl', 'wb') as file:
+                pickle.dump(self.response.json()['token'], file)
+        else:
+            return self.response.json()['token']
 
 
     def return_token(self):

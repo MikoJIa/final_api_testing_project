@@ -59,3 +59,7 @@ negative_data_list = [
         "info": "is_not_dict"
     }
 ]
+
+USER_AUTH = {
+    "name": "Mikola"
+}

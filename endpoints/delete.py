@@ -14,7 +14,7 @@ class DeleteMeme(BaseEndpoint):
         return self.response
 
     @allure.step("Check for deletion of non-existent meme")
-    def deleted_non_existent_meme(self, checking_non_existent_meme_id):
+    def check_non_existent_meme_deleted(self, checking_non_existent_meme_id):
         if checking_non_existent_meme_id != "Such an id exists":
             random_id = checking_non_existent_meme_id
             assert self.deleting_meme(random_id).status_code == 404

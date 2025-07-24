@@ -14,17 +14,7 @@ from endpoints.expected_headers import ExpectedAuthTest
 from endpoints.base_endpoint import BaseEndpoint
 from endpoints.negative_created_meme import NegativeCreateMeme
 from endpoints.negative_testing_update import NegativePutTest
-
-
-body = BaseEndpoint().body
-USER_AUTH = {
-    "name": "Mikola"
-}
-ANOTHER_USER_AUTH = {
-    "name": "Alex"
-}
-
-base_url = BaseEndpoint.url
+from all_test_data.body_for_test_and_another_user import body, ANOTHER_USER_AUTH
 
 
 @allure.step("Creating new meme")
@@ -86,6 +76,6 @@ def delete():
     return DeleteMeme()
 
 
-# @pytest.fixture(scope='class')
-# def new_auth_user():
-#     return NewUserAuthorization()
+@pytest.fixture()
+def another_token(authorization):
+    return authorization.authorize_user(ANOTHER_USER_AUTH, save_token=False)

@@ -20,12 +20,7 @@ class BaseEndpoint:
         self.headers = {
                  "Authorization": f"{self.obj_token}"
              }
-        self.body = {
-            "text": "I love memes",
-            "url": "https://miro.medium.com/v2/resize:fit:1200/1*OkVxoXBTygSKB8K-zbB7uQ.jpeg",
-            "tags": ["face", "smile"],
-            "info": {"colors": ["green", "white"]}
-        }
+
         with open('id_meme.txt', 'r') as file:
             self.id_mem = int(file.read())
         # with open('id_meme_alex.txt', 'r') as file:
@@ -49,3 +44,6 @@ class BaseEndpoint:
 
     def check_status_code_is_401(self, expected):
         assert self.response.status_code == expected
+
+    def check_status_code_is_403(self):
+        assert self.response.status_code == 403

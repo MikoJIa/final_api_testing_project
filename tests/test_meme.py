@@ -9,20 +9,10 @@ from endpoints.base_endpoint import BaseEndpoint
 from all_test_data.test_data import valid_data_list, valid_data_json_one_meme_list
 from all_test_data.test_data import invalid_data_list, valid_data_json_created_meme_list, negative_data_list
 import itertools
+from all_test_data.test_data import USER_AUTH
+from all_test_data.body_for_test_and_another_user import body, ANOTHER_USER_AUTH
 
-body = {
-    "info": {"colors": ["green", "white"]},
-    "tags": ["face", "smile"],
-    "text": "I love memes",
-    "url": "https://miro.medium.com/v2/resize:fit:1200/1*OkVxoXBTygSKB8K-zbB7uQ.jpeg",
 
-}
-USER_AUTH = {
-    "name": "Mikola"
-}
-ANOTHER_USER_AUTH = {
-    "name": "Alex"
-}
 OBJECT_TOKEN = BaseEndpoint().obj_token
 id_mem = BaseEndpoint().id_mem
 
@@ -150,7 +140,7 @@ def test_delete_meme(delete, add_new_meme, get_one_meme):
 @allure.feature("Meme's")
 @allure.story("Deleting a non-existent meme")
 def test_delete_non_existent_meme(delete, get_one_meme):
-    delete.deleted_non_existent_meme(get_one_meme.checking_non_existent_meme_id())
+    delete.check_non_existent_meme_deleted(get_one_meme.checking_non_existent_meme_id())
 
 
 @allure.feature("Headers")
@@ -168,7 +158,8 @@ def test_expected_auth_headers(auth_headers, headers, expected):
     auth_headers.output_result()
 
 
-# @allure.feature("Meme's")
-# @allure.story("Another user deleted")
-# def test_new_auth_user_del_meme(new_auth_user, delete, create):
-#     pass
+@allure.feature("Meme's")
+@allure.story("Another user deleted")
+def test_new_auth_user_del_meme(another_token, add_new_meme, delete):
+    delete.deleting_meme(add_new_meme, headers={"Authorization": f"{another_token}"})
+    delete.check_status_code_is_403()
